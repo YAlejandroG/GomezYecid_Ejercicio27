@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+using namespace std;
 
 int explicitScheme(double w,double dt,double t,string nombre);
 int implicitScheme(double w,double dt,double t,string nombre);
@@ -17,13 +18,13 @@ int main(){
     string n5 = "explicit0.01.dat";
     string n6 = "explicit1.dat";
     
-    implicitScheme(w,dt,t,n1);
-    implicitScheme(w,dt,t,n2);
-    implicitScheme(w,dt,t,n3);
+    implicitScheme(w,dt1,t,n1);
+    implicitScheme(w,dt2,t,n2);
+    implicitScheme(w,dt3,t,n3);
     
-    explicitScheme(w,dt,t,n4);
-    explicitScheme(w,dt,t,n5);
-    explicitScheme(w,dt,t,n6);
+    explicitScheme(w,dt1,t,n4);
+    explicitScheme(w,dt2,t,n5);
+    explicitScheme(w,dt3,t,n6);
     
     return 0;
 }
@@ -34,7 +35,7 @@ int explicitScheme(double w,double dt,double t,string nombre){
     double integral = 1.0;
     for(double i=0;i<=t;i+=dt){
         integral -= w*dt*integral;
-        outfile<<integral<<endl;
+        outfile<<i<<" "<<integral<<endl;
     }
     outfile.close();
     
@@ -47,7 +48,7 @@ int implicitScheme(double w,double dt,double t,string nombre){
     double integral = 1.0;
     for(double i=0;i<=t;i+=dt){
         integral = integral/(1.0+w*dt);
-        outfile<<integral<<endl;
+        outfile<<i<<" "<<integral<<endl;
     }
     outfile.close();
     
