@@ -1,55 +1,55 @@
+#include <fstream>
 #include <iostream>
-#include <stdlib.h>
-#include <math.h>
 
-double integral(double t);
-double explicitScheme(double wdt,double t);
-double implicitScheme(double wdt,double t);
-double calcerror(double real,double calc);
+int explicitScheme(double w,double dt,double t,string nombre);
+int implicitScheme(double w,double dt,double t,string nombre);
 
 int main(){
-    double wdt;
-    double t;
+    double w = 0.1;
+    double t = 4.0/w;
+    double dt1 = 0.1/w;
+    double dt2 = 0.01/w;
+    double dt3 = 1.0/w;
+    string n1 = "implicit0.1.dat";
+    string n2 = "implicit0.01.dat";
+    string n3 = "implicit1.dat";
+    string n4 = "explicit0.1.dat";
+    string n5 = "explicit0.01.dat";
+    string n6 = "explicit1.dat";
     
-    std::cout<<"Ingresar wdt:"<<std::endl;
-    std::cin>>wdt;
-    std::cout<<"Ingresar t:"<<std::endl;
-    std::cin>>t;
+    implicitScheme(w,dt,t,n1);
+    implicitScheme(w,dt,t,n2);
+    implicitScheme(w,dt,t,n3);
     
-    double int1 = integral(t);
-    std::cout<<"Integral real con wdt = "<<wdt<<" : "<<int1<<std::endl;
-    double int2 = explicitScheme(wdt,t);
-    double e1 = calcerror(int1,int2);
-    std::cout<<"Integral explicita con wdt = "<<wdt<<" : "<<int2<<std::endl;
-    std::cout<<"Error integral explicita: "<<e1<<"%"<<std::endl;
-    double int3 = implicitScheme(wdt,t);
-    double e2 = calcerror(int1,int3);
-    std::cout<<"Integral implicita con wdt = "<<wdt<<" : "<<int3<<std::endl;
-    std::cout<<"Error integral implicita: "<<e2<<"%"<<std::endl;
+    explicitScheme(w,dt,t,n4);
+    explicitScheme(w,dt,t,n5);
+    explicitScheme(w,dt,t,n6);
+    
+    return 0;
 }
 
-double integral(double t){
-    double integral = exp(-t);
-    return integral;
-}
-
-double explicitScheme(double wdt,double t){
+int explicitScheme(double w,double dt,double t,string nombre){
+    ofstream outfile;
+    outfile.open(nombre);
     double integral = 1.0;
-    for(double i=0;i<=t;i+=wdt){
-        integral -= wdt*integral;
+    for(double i=0;i<=t;i+=dt){
+        integral -= w*dt*integral;
+        outfile<<integral<<endl;
     }
-    return integral;
+    outfile.close();
+    
+    return 0;
 }
 
-double implicitScheme(double wdt,double t){
+int implicitScheme(double w,double dt,double t,string nombre){
+    ofstream outfile;
+    outfile.open(nombre);
     double integral = 1.0;
-    for(double i=0;i<=t;i+=wdt){
-        integral = integral/(1.0+wdt);
+    for(double i=0;i<=t;i+=dt){
+        integral = integral/(1.0+w*dt);
+        outfile<<integral<<endl;
     }
-    return integral;
-}
-
-double calcerror(double real,double calc){
-    double error = 100*abs(real-calc)/real;
-    return error;
+    outfile.close();
+    
+    return 0;
 }
